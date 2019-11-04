@@ -1,4 +1,4 @@
-package com.leyou.common;
+package com.leyou.common.pojo;
 
 import java.util.List;
 

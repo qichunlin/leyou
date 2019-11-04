@@ -2,7 +2,7 @@ package com.leyou.item.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.leyou.common.PageResult;
+import com.leyou.common.pojo.PageResult;
 import com.leyou.item.mapper.BrandMapper;
 import com.leyou.item.pojo.Brand;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +25,7 @@ public class BrandService {
 
         //根据name模糊查询,或者根据首字母查询
         if (StringUtils.isNotBlank(key)) {
+            //name 满足或者首字母也满足
             criteria.andLike("name","%" + key + "%").orEqualTo("letter",key);
         }
 
@@ -33,13 +34,14 @@ public class BrandService {
 
         // 添加排序条件
         if (StringUtils.isNotBlank(sortBy)) {
+            //setOrderByClause("id desc")  排序条件
             example.setOrderByClause(sortBy + " " + (desc ? "desc" : "asc"));
         }
         //选择数据根据查询条件查询
         List<Brand> brands = this.brandMapper.selectByExample(example);
         // 包装成pageInfo
         PageInfo<Brand> pageInfo = new PageInfo<>(brands);
-        // 包装成分页结果集返回
+        // 包装成分页结果集返回  获取总条数还有集合信息
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
 }
