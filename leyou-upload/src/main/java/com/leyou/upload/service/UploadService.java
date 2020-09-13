@@ -1,17 +1,27 @@
 package com.leyou.upload.service;
 
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
 
+
+/**
+ * 文件上传service
+ *
+ * @author legend
+ */
 @Service
 public class UploadService {
 
@@ -21,6 +31,9 @@ public class UploadService {
      * 定义一个文件服务器地址
      */
     private static final String HOST_IMAGE_URL = "/user/legend/images";
+
+    @Autowired
+    private FastFileStorageClient storageClient;
 
     /**
      * 存储所有合法的类型
@@ -51,10 +64,15 @@ public class UploadService {
             }
 
             //保存到服务器
-            file.transferTo(new File(HOST_IMAGE_URL));
+            //file.transferTo(new File(HOST_IMAGE_URL));
 
             //返回url进行会写
-            return "http://image.leyou.com/" + originalFilename;
+            //return "http://image.leyou.com/" + originalFilename;
+
+            //获取文件的扩展名
+            String fileNameExt = StringUtils.substringAfterLast(originalFilename, ".");
+            StorePath storePath = this.storageClient.uploadFile(file.getInputStream(), file.getSize(), fileNameExt, null);
+            return "http://image.leyou.com/" + storePath;
         } catch (Exception e) {
             LOGGER.info("服务器内部错误.....{}",originalFilename);
             e.printStackTrace();
