@@ -5,13 +5,34 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 品牌表，一个品牌下有多个商品（spu），一对多关系
+ *
+ * @author legend
+ */
 @Table(name = "tb_brand")
 public class Brand {
+
+    /**
+     * 品牌id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;// 品牌名称
-    private String image;// 品牌图片
+
+    /**
+     * 品牌名称
+     */
+    private String name;
+
+    /**
+     * 品牌图片地址
+     */
+    private String image;
+
+    /**
+     * 品牌的首字母
+     */
     private Character letter;
 
     public Long getId() {
