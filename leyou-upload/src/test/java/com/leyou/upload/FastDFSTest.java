@@ -1,4 +1,4 @@
-package com.qcl.upload;
+package com.leyou.upload;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.domain.ThumbImageConfig;
