@@ -2,13 +2,17 @@ package com.leyou.item.controller;
 
 import com.leyou.bo.SpuBo;
 import com.leyou.common.pojo.PageResult;
+import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 商品controller
@@ -46,6 +50,48 @@ public class GoodsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pageResult);
+    }
+
+
+    /**
+     * 新增商品
+     *
+     * @return
+     */
+    @PostMapping("/goods")
+    public ResponseEntity<Void> saveGoods(@RequestBody SpuBo spuBo) {
+        System.out.println("hello");
+        this.goodsService.saveGoods(spuBo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 根据spuid查询spuDetail
+     *
+     * @return
+     */
+    @PostMapping("/spu/detail/{spuId}")
+    public ResponseEntity<SpuDetail> querySpuDetailBySpuId(@PathVariable("spuId") Long spuId) {
+        SpuDetail spuDetail = this.goodsService.querySpuDetailBySpuId(spuId);
+        if (spuDetail == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(spuDetail);
+    }
+
+
+    /**
+     * 根据spuid查询sku集合
+     *
+     * @return
+     */
+    @GetMapping("/sku/list")
+    public ResponseEntity<List<Sku>> querySkuListBySpuId(@RequestParam("id") Long spuId) {
+        List<Sku> skuList = this.goodsService.querySkusBySpuId(spuId);
+        if (CollectionUtils.isEmpty(skuList)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(skuList);
     }
 
 }
