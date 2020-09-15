@@ -15,6 +15,7 @@
         <module>leyou-common</module>
         <module>leyou-upload</module>
         <module>springboot-demo</module>
+        <module>springboot-user</module>
     </modules>
 
     <name>leyou</name>
