@@ -1,0 +1,8 @@
+server:
+  port: 8088
+
+
+#fastdfs临时文件路径
+qcl-fastdfs:
+  #文件临时上传目录
+  upload-location: D:\WorkCode\uploadimages\
