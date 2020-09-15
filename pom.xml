@@ -16,6 +16,7 @@
         <module>leyou-upload</module>
         <module>springboot-demo</module>
         <module>springboot-user</module>
+        <module>springboot-fastdfs</module>
     </modules>
 
     <name>leyou</name>
