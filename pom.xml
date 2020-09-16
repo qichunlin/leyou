@@ -17,6 +17,7 @@
         <module>springboot-demo</module>
         <module>springboot-user</module>
         <module>springboot-fastdfs</module>
+        <module>http-demo</module>
     </modules>
 
     <name>leyou</name>

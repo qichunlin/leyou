@@ -15,4 +15,5 @@ eureka:
   server:
     # 关闭自我保护模式
     enable-self-preservation: false
+    # 剔除无效连接的间隔时间默认是60s
     eviction-interval-timer-in-ms: 10000
