@@ -1,5 +1,7 @@
 package com.qcl.httpdemo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qcl.httpdemo.pojo.User;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -20,6 +22,11 @@ import java.io.IOException;
 public class HttpTests {
 
     CloseableHttpClient httpClient;
+
+    /**
+     * 序列化和反序列化工具
+     */
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void init() {
@@ -47,5 +54,12 @@ public class HttpTests {
         HttpGet request = new HttpGet("http://localhost:8099/user/hello");
         String response = this.httpClient.execute(request, new BasicResponseHandler());
         System.out.println(response);
+        //反序列化为对象(对象的toString方法)
+        User user = objectMapper.readValue(response, User.class);
+        System.out.println(user);
+
+        //序列化(json字符串)
+        String writeValueAsString = objectMapper.writeValueAsString(user);
+        System.out.println(writeValueAsString);
     }
 }
