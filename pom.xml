@@ -18,6 +18,7 @@
         <module>springboot-user</module>
         <module>springboot-fastdfs</module>
         <module>http-demo</module>
+        <module>springboot-elasticsearch</module>
     </modules>
 
     <name>leyou</name>
