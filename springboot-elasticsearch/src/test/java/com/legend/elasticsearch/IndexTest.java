@@ -3,12 +3,19 @@ package com.legend.elasticsearch;
 import com.legend.elasticsearch.entity.Item;
 import com.legend.elasticsearch.respository.ItemRepository;
 import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -26,6 +33,8 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ElasticsearchAppMain.class)
 public class IndexTest {
+
+    private static final Logger log = LoggerFactory.getLogger(IndexTest.class);
 
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
@@ -109,6 +118,75 @@ public class IndexTest {
         Iterable<Item> items = this.itemRepository.findByTitle("手机");
         items.forEach(System.out::println);
         //items.forEach(item-> System.out.println(item));
+    }
+
+    /**
+     * 使用自定义方法查询数据2
+     */
+    @Test
+    public void testFindByPriceBetween() {
+        // 使用自定义方法查询数据
+        Iterable<Item> items = this.itemRepository.findByPriceBetween(3699D, 5999D);
+        items.forEach(System.out::println);
+        //items.forEach(item-> System.out.println(item));
+    }
+
+
+    /**
+     * 高级查询
+     */
+    @Test
+    public void testSearch() {
+        // 通过查询构建器工具构建查询条件
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("title", "手机");
+
+        //执行查询获取数据结果集
+        Iterable<Item> items = this.itemRepository.search(matchQueryBuilder);
+        items.forEach(System.out::println);
+        //items.forEach(item-> System.out.println(item));
+    }
+
+
+    /**
+     * 自定义参数查询
+     */
+    @Test
+    public void testNative() {
+        // 构建自定义查询构建器
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+        //添加基本的查询条件
+        nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery("title", "手机"));
+
+        //执行查询获取数据结果集
+        Page<Item> itemPage = this.itemRepository.search(nativeSearchQueryBuilder.build());
+        log.info("总页数：{}", itemPage.getTotalPages());
+        log.info("总条数：{}", itemPage.getTotalElements());
+
+        //获取集合内容
+        List<Item> itemList = itemPage.getContent();
+        itemList.forEach(System.out::println);
+    }
+
+    /**
+     * 测试分页
+     */
+    @Test
+    public void testPage() {
+        // 构建自定义查询构建器
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+        //添加基本的查询条件
+        nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery("category", "手机"));
+        //添加分页条件,页码是从0开始
+        nativeSearchQueryBuilder.withPageable(PageRequest.of(1, 2));
+
+        //执行查询获取数据结果集
+        Page<Item> itemPage = this.itemRepository.search(nativeSearchQueryBuilder.build());
+        log.info("总页数：{}", itemPage.getTotalPages());
+        log.info("总条数：{}", itemPage.getTotalElements());
+
+        //获取集合内容
+        List<Item> itemList = itemPage.getContent();
+        itemList.forEach(System.out::println);
     }
 
 
