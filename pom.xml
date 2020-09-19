@@ -19,6 +19,7 @@
         <module>springboot-fastdfs</module>
         <module>http-demo</module>
         <module>springboot-elasticsearch</module>
+        <module>springboot-zuul</module>
     </modules>
 
     <name>leyou</name>
