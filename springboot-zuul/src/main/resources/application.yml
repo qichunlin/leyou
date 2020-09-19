@@ -12,15 +12,29 @@ eureka:
       defaultZone: http://127.0.0.1:10086/eureka
 
 # zuul相关配置
+zuul:
+  routes:
+    service-provider: /service-provider/**
+    service-consumer: /service-consumer/**
+  prefix: /api # 添加路由前缀
+
+# 第一种路由配置方式
+#zuul:
+#  routes:
+#    service-provider: # 这里是路由id，随意写
+#      path: /service-provider/** # 这里是映射路径
+#      url: http://127.0.0.1:8081 # 映射服务路径对应的实际url地址
+
+
+#第二种路由配置方式
+#zuul:
+#  routes:
+#    service-provider: # 这里是路由id，随意写
+#      path: /service-provider/** # 这里是映射路径
+#      serviceId: service-provider # 指定服务名称
+
+
+# 第三种配置路由的方式
 #zuul:
 #  routes:
 #    service-provider: /service-provider/**
-#    service-consumer: /service-consumer/**
-#  prefix: /api # 添加路由前缀
-
-zuul:
-  routes:
-    service-provider: # 这里是路由id，随意写
-      path: /service-provider/** # 这里是映射路径
-      serviceId: service-provider # 指定服务名称
-      url: http://127.0.0.1:8081 # 映射服务路径对应的实际url地址

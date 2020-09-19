@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LoginFilter extends ZuulFilter {
     /**
-     * 过滤器类型，前置过滤器
+     * 过滤器类型，前置过滤器 pre/routing/post/error
      *
      * @return
      */
@@ -30,17 +30,19 @@ public class LoginFilter extends ZuulFilter {
     }
 
     /**
-     * 过滤器的执行顺序
+     * 过滤器的执行顺序：返回值越小,优先级越高
      *
      * @return
      */
     @Override
     public int filterOrder() {
-        return 1;
+        return 10;
     }
 
     /**
      * 该过滤器是否生效
+     * 是否执行该过滤器(是否执行run方法)
+     * true：执行run方法
      *
      * @return
      */
@@ -50,6 +52,7 @@ public class LoginFilter extends ZuulFilter {
     }
 
     /**
+     * 编写过滤器的业务逻辑
      * 登陆校验逻辑
      *
      * @return
